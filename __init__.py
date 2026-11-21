@@ -1,1 +1,1 @@
-# database package initialization
+# routes package initialization
