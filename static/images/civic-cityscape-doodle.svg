@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 260" width="100%" height="100%" fill="none">
+  <defs>
+    <filter id="sketch-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#C84B31" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Ground Hand-Drawn Wavy Baseline -->
+  <path d="M10 230 C 140 228, 220 233, 360 229 C 480 226, 560 232, 670 230" stroke="#78716C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="660" />
+  
+  <!-- Crosswalk Hand-Drawn Lines -->
+  <path d="M290 238 L330 238 M345 238 L385 238 M400 238 L440 238" stroke="#D97706" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Building 1: Municipal Town Hall with Clock Tower (Terracotta Outline) -->
+  <path d="M40 230 V 110 C 40 106, 44 102, 50 102 H 110 C 116 102, 120 106, 120 110 V 230" stroke="#C84B31" stroke-width="2.5" stroke-linecap="round" fill="#FAF7F2" fill-opacity="0.4" />
+  <!-- Clock Tower Roof Peak -->
+  <path d="M40 102 L 80 50 L 120 102 Z" stroke="#C84B31" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="#FBE8E4" fill-opacity="0.5" />
+  <!-- Clock Circle & Hands -->
+  <circle cx="80" cy="85" r="14" stroke="#C84B31" stroke-width="2" fill="#FFFFFF" />
+  <path d="M80 85 V 77 M80 85 L 86 88" stroke="#C84B31" stroke-width="2" stroke-linecap="round" />
+  <!-- Town Hall Windows & Arched Door -->
+  <rect x="55" y="125" width="16" height="20" rx="3" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <rect x="89" y="125" width="16" height="20" rx="3" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <rect x="55" y="160" width="16" height="20" rx="3" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <rect x="89" y="160" width="16" height="20" rx="3" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <path d="M68 230 V 205 C 68 198, 92 198, 92 205 V 230" stroke="#C84B31" stroke-width="2.2" fill="#C84B31" fill-opacity="0.15" />
+
+  <!-- Whimsical Organic City Tree (Sage Green) -->
+  <path d="M145 230 V 170" stroke="#78716C" stroke-width="3" stroke-linecap="round" />
+  <!-- Tree Foliage Clouds -->
+  <path d="M145 170 C 120 165, 115 135, 135 125 C 120 105, 145 85, 165 95 C 180 80, 210 95, 205 115 C 220 130, 205 160, 185 165 C 175 175, 155 175, 145 170 Z" 
+        stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="#E2F0EA" fill-opacity="0.7" />
+  <circle cx="155" cy="125" r="3" fill="#2D6A4F" />
+  <circle cx="178" cy="140" r="2.5" fill="#2D6A4F" />
+
+  <!-- Hand-Drawn Streetlight with Warm Ochre Glow -->
+  <path d="M225 230 V 95 C 225 80, 248 80, 248 95" stroke="#78716C" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Lamp shade -->
+  <path d="M240 95 L 256 95 L 252 105 L 244 105 Z" stroke="#78716C" stroke-width="2" fill="#D97706" />
+  <!-- Radiant Light Rays -->
+  <path d="M248 108 L 248 122 M 238 116 L 230 126 M 258 116 L 266 126" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3" />
+  <circle cx="248" cy="115" r="16" fill="#FEF3C7" fill-opacity="0.35" />
+
+  <!-- Centerpiece: Smart Civic Infrastructure & Diagnostics -->
+  <!-- Building 2: Civic Center with Green Roof (Sage & Terracotta) -->
+  <path d="M280 230 V 140 C 280 135, 285 132, 290 132 H 375 C 380 132, 385 135, 385 140 V 230" stroke="#78716C" stroke-width="2.5" fill="#FAF7F2" fill-opacity="0.5" />
+  <!-- Rooftop Solar / Foliage terrace -->
+  <path d="M275 132 Q 332 120, 390 132" stroke="#2D6A4F" stroke-width="4" stroke-linecap="round" />
+  <circle cx="305" cy="165" r="8" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <circle cx="332" cy="165" r="8" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <circle cx="360" cy="165" r="8" stroke="#78716C" stroke-width="1.8" fill="#FFFFFF" />
+  <!-- Dual Entrance -->
+  <rect x="318" y="195" width="28" height="35" rx="3" stroke="#78716C" stroke-width="2" fill="#E5DEC9" fill-opacity="0.4" />
+
+  <!-- Doodles Floating Over Skyline (Artistic City Elements) -->
+  
+  <!-- Friendly Water Droplet (Water & Drainage) -->
+  <g transform="translate(425, 130)">
+    <path d="M15 0 C 15 0, 0 20, 0 32 C 0 42, 8 50, 18 50 C 28 50, 36 42, 36 32 C 36 20, 21 0, 15 0 Z" 
+          stroke="#2563EB" stroke-width="2.5" fill="#EFF6FF" fill-opacity="0.85" />
+    <!-- Smiling Eye & Smile on droplet -->
+    <circle cx="12" cy="30" r="2" fill="#1E40AF" />
+    <circle cx="24" cy="30" r="2" fill="#1E40AF" />
+    <path d="M14 36 Q 18 40, 22 36" stroke="#1E40AF" stroke-width="1.8" stroke-linecap="round" fill="none" />
+    <!-- Droplet Sparkles -->
+    <path d="M28 15 L 32 13 M31 22 L 35 23" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- Handy Repair Wrench & Sprout Doodle (Infrastructure & Care) -->
+  <g transform="translate(485, 95) rotate(-15)">
+    <!-- Wrench -->
+    <path d="M10 25 L 45 60 C 47 62, 52 62, 54 60 C 56 58, 56 53, 54 51 L 19 16 M8 8 C 3 13, 3 20, 8 25 C 13 30, 20 30, 25 25 L 20 20 L 15 22 L 12 19 L 14 14 L 9 9 Z" 
+          stroke="#C84B31" stroke-width="2.2" stroke-linejoin="round" fill="#FDF4F2" />
+  </g>
+
+  <!-- Building 3: Modern Tech Tower (Peelamedu Tech corridor) -->
+  <path d="M540 230 V 80 C 540 75, 545 72, 550 72 H 620 C 625 72, 630 75, 630 80 V 230" stroke="#78716C" stroke-width="2.5" fill="#FAF7F2" fill-opacity="0.5" />
+  <!-- Grid Matrix of Modern Windows -->
+  <line x1="560" y1="95" x2="610" y2="95" stroke="#D97706" stroke-width="2" stroke-linecap="round" />
+  <line x1="560" y1="120" x2="610" y2="120" stroke="#78716C" stroke-width="2" stroke-linecap="round" />
+  <line x1="560" y1="145" x2="610" y2="145" stroke="#78716C" stroke-width="2" stroke-linecap="round" />
+  <line x1="560" y1="170" x2="610" y2="170" stroke="#C84B31" stroke-width="2" stroke-linecap="round" />
+  <line x1="560" y1="195" x2="610" y2="195" stroke="#78716C" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Playful Hand-Drawn Stars & Sparkles -->
+  <!-- Star 1 (Terracotta) -->
+  <path d="M180 50 L 183 59 L 192 62 L 183 65 L 180 74 L 177 65 L 168 62 L 177 59 Z" fill="#C84B31" />
+  <!-- Star 2 (Ochre) -->
+  <path d="M480 40 L 482 46 L 488 48 L 482 50 L 480 56 L 478 50 L 472 48 L 478 46 Z" fill="#D97706" />
+  <!-- Star 3 (Sage) -->
+  <path d="M330 65 L 332 70 L 337 72 L 332 74 L 330 79 L 328 74 L 323 72 L 328 70 Z" fill="#2D6A4F" />
+  <!-- Star 4 (Mini Ochre) -->
+  <path d="M640 50 L 641 54 L 645 55 L 641 56 L 640 60 L 639 56 L 635 55 L 639 54 Z" fill="#D97706" />
+
+  <!-- Cute Whimsical Dotted Trajectory (AI routing loop) -->
+  <path d="M120 70 C 190 20, 270 40, 310 90 C 340 130, 420 80, 460 50 C 500 20, 580 40, 610 70" 
+        stroke="#C84B31" stroke-width="1.8" stroke-dasharray="4 6" stroke-linecap="round" fill="none" opacity="0.6" />
+</svg>

@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Authority Portal - CivicResolve AI{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+
+    <!-- Admin Portal Header with Hand-Drawn Organic Corner Doodle -->
+    <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 p-6 sm:p-8 shadow-xs">
+        <!-- Subtle hand-drawn corner doodle -->
+        <div class="absolute -right-4 -bottom-6 w-36 h-36 opacity-35 dark:opacity-20 pointer-events-none select-none" aria-hidden="true">
+            <img src="{{ url_for('static', filename='images/civic-corner-doodle.svg') }}" alt="" class="w-full h-full" />
+        </div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#1C1917] dark:bg-stone-800 text-[#FAF7F2] mb-2 border border-[#2E2A24] dark:border-stone-700">
+                    <svg class="w-3.5 h-3.5 text-[#4ADE80] mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>Municipal Authority Control Center</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-[#1C1917] dark:text-[#F5F2EB] tracking-tight">
+                    Civic Triage & Operations Dashboard
+                </h1>
+                <p class="text-stone-500 dark:text-stone-400 text-sm mt-1 max-w-2xl">
+                    Filter by priority, target SLAs, and department, review AI risk insights, and update complaint status across municipal agencies.
+                </p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <span class="text-xs text-stone-500 dark:text-stone-400">Auto-assigned via <strong class="text-[#C84B31] dark:text-[#E06D53]">Gemini 2.5 Flash</strong></span>
+                <a href="{{ url_for('citizen.track') }}" class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#FAF7F2] dark:bg-stone-800 border border-[#E5DEC9] dark:border-stone-700 text-[#1C1917] dark:text-[#F5F2EB] hover:bg-[#F5EFE6] dark:hover:bg-stone-700 transition">
+                    Switch to Citizen View
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 shadow-xs card-hover">
+            <span class="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">Total Complaints</span>
+            <span class="text-3xl font-extrabold text-[#1C1917] dark:text-[#F5F2EB] mt-2 block">{{ metrics.total }}</span>
+            <span class="text-[11px] text-stone-400 mt-1 block">Registered in database</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 shadow-xs card-hover">
+            <span class="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider block">Reported (New)</span>
+            <span class="text-3xl font-extrabold text-stone-700 dark:text-stone-300 mt-2 block">{{ metrics.reported }}</span>
+            <span class="text-[11px] text-stone-400 mt-1 block">Awaiting dispatch</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 shadow-xs card-hover">
+            <span class="text-xs font-semibold text-[#D97706] dark:text-[#FBBF24] uppercase tracking-wider block">In Progress</span>
+            <span class="text-3xl font-extrabold text-[#D97706] dark:text-[#FBBF24] mt-2 block">{{ metrics.in_progress }}</span>
+            <span class="text-[11px] text-stone-400 mt-1 block">Field units active</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 shadow-xs card-hover">
+            <span class="text-xs font-semibold text-[#2D6A4F] dark:text-[#4ADE80] uppercase tracking-wider block">Resolved</span>
+            <span class="text-3xl font-extrabold text-[#2D6A4F] dark:text-[#4ADE80] mt-2 block">{{ metrics.resolved }}</span>
+            <span class="text-[11px] text-stone-400 mt-1 block">Remediation closed</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#211F1C] border border-rose-200 dark:border-rose-900 shadow-xs bg-rose-50/20 dark:bg-rose-950/20 col-span-2 lg:col-span-1 card-hover">
+            <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wider block flex items-center">
+                <span class="w-2 h-2 rounded-full bg-rose-600 mr-1.5 animate-ping"></span>
+                Critical Pending
+            </span>
+            <span class="text-3xl font-extrabold text-rose-600 dark:text-rose-400 mt-2 block">{{ metrics.critical_pending }}</span>
+            <span class="text-[11px] text-rose-600 dark:text-rose-400 font-medium mt-1 block">Requires immediate action</span>
+        </div>
+    </div>
+
+    <!-- Analytics Breakdown: Priority & Department Distribution -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Priority Breakdown -->
+        <div class="bg-white dark:bg-[#211F1C] p-6 rounded-2xl border border-[#E5DEC9] dark:border-stone-800 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b border-[#E5DEC9] dark:border-stone-800 pb-3">
+                <h3 class="text-sm font-bold text-[#1C1917] dark:text-[#F5F2EB] uppercase tracking-wider flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-[#C84B31] dark:text-[#E06D53]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    AI Priority Assessment Distribution
+                </h3>
+                <span class="text-xs text-stone-400">Total: {{ metrics.total }}</span>
+            </div>
+
+            <div class="space-y-3">
+                {% set p_counts = metrics.priorities %}
+                {% for p in priorities %}
+                    {% set count = p_counts.get(p, 0) %}
+                    {% set percent = (count / metrics.total * 100)|round|int if metrics.total > 0 else 0 %}
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-medium text-stone-700 dark:text-stone-300">
+                            <span class="flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full mr-2 {% if p == 'Critical' %}bg-rose-500{% elif p == 'High' %}bg-amber-500{% elif p == 'Medium' %}bg-[#C84B31]{% else %}bg-[#2D6A4F]{% endif %}"></span>
+                                {{ p }} Priority
+                            </span>
+                            <span class="text-stone-500 dark:text-stone-400 font-semibold">{{ count }} ({{ percent }}%)</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-[#FAF7F2] dark:bg-stone-800 overflow-hidden">
+                            <div class="h-full rounded-full transition-all duration-500 {% if p == 'Critical' %}bg-rose-500{% elif p == 'High' %}bg-amber-500{% elif p == 'Medium' %}bg-[#C84B31]{% else %}bg-[#2D6A4F]{% endif %}" style="width: {{ percent }}%"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Department Workload Breakdown -->
+        <div class="bg-white dark:bg-[#211F1C] p-6 rounded-2xl border border-[#E5DEC9] dark:border-stone-800 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b border-[#E5DEC9] dark:border-stone-800 pb-3">
+                <h3 class="text-sm font-bold text-[#1C1917] dark:text-[#F5F2EB] uppercase tracking-wider flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-[#2D6A4F] dark:text-[#4ADE80]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    Department Routing Workload
+                </h3>
+                <span class="text-xs text-stone-400">Assigned Routing</span>
+            </div>
+
+            <div class="space-y-2.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                {% set dept_counts = metrics.departments %}
+                {% if dept_counts %}
+                    {% for dept, count in dept_counts.items() %}
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-[#FAF7F2] dark:bg-stone-800 hover:bg-[#F5EFE6] dark:hover:bg-stone-750 transition text-xs border border-[#E5DEC9] dark:border-stone-700">
+                            <span class="font-medium text-stone-800 dark:text-stone-200 truncate max-w-[260px]">{{ dept }}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold">{{ count }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-xs text-stone-400 py-4 text-center">No department activity recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter & Triage Toolbar -->
+    <div class="bg-white dark:bg-[#211F1C] p-5 rounded-2xl border border-[#E5DEC9] dark:border-stone-800 shadow-xs space-y-4">
+        <form method="GET" action="{{ url_for('admin.dashboard') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            
+            <!-- Search -->
+            <div>
+                <label for="admin-search" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Search Tickets
+                </label>
+                <input type="text" id="admin-search" name="search" value="{{ current_search }}"
+                       placeholder="Ticket ID or keyword..."
+                       class="w-full px-3 py-2 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] placeholder-stone-400 dark:placeholder-stone-500 focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition" />
+            </div>
+
+            <!-- Priority Filter -->
+            <div>
+                <label for="admin-priority" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Filter Priority
+                </label>
+                <select id="admin-priority" name="priority" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_priority == 'All' %}selected{% endif %}>All Priorities</option>
+                    {% for p in priorities %}
+                        <option value="{{ p }}" {% if current_priority == p %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Department Filter -->
+            <div>
+                <label for="admin-department" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Filter Department
+                </label>
+                <select id="admin-department" name="department" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_department == 'All' %}selected{% endif %}>All Departments</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept }}" {% if current_department == dept %}selected{% endif %}>{{ dept }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div>
+                <label for="admin-status" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Filter Status
+                </label>
+                <select id="admin-status" name="status" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_status == 'All' %}selected{% endif %}>All Statuses</option>
+                    {% for s in statuses %}
+                        <option value="{{ s }}" {% if current_status == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        {% if current_status != 'All' or current_priority != 'All' or current_department != 'All' or current_search %}
+            <div class="flex items-center justify-between text-xs pt-2 border-t border-[#E5DEC9] dark:border-stone-800">
+                <span class="text-stone-600 dark:text-stone-400 font-medium">Showing filtered results</span>
+                <a href="{{ url_for('admin.dashboard') }}" class="text-[#C84B31] dark:text-[#E06D53] hover:underline font-semibold">
+                    Clear all filters
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Complaints Management Table -->
+    <div class="bg-white dark:bg-[#211F1C] rounded-2xl border border-[#E5DEC9] dark:border-stone-800 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-[#FAF7F2] dark:bg-stone-800 border-b border-[#E5DEC9] dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold uppercase tracking-wider">
+                        <th scope="col" class="py-3.5 px-4">Ticket</th>
+                        <th scope="col" class="py-3.5 px-4">Complaint & Location</th>
+                        <th scope="col" class="py-3.5 px-4">Priority & SLA</th>
+                        <th scope="col" class="py-3.5 px-4">Department Routing</th>
+                        <th scope="col" class="py-3.5 px-4">Impact</th>
+                        <th scope="col" class="py-3.5 px-4">Status</th>
+                        <th scope="col" class="py-3.5 px-4 text-right">Triage Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-[#E5DEC9] dark:divide-stone-800">
+                    {% if complaints %}
+                        {% for issue in complaints %}
+                            <tr class="hover:bg-[#FAF7F2]/60 dark:hover:bg-stone-800/50 transition">
+                                <!-- Ticket ID -->
+                                <td class="py-4 px-4 align-top whitespace-nowrap">
+                                    <div class="flex items-center space-x-1">
+                                        <a href="{{ url_for('citizen.issue_detail', ticket_id=issue.ticket_id) }}" class="font-mono font-bold text-[#C84B31] dark:text-[#E06D53] hover:underline">
+                                            #{{ issue.ticket_id }}
+                                        </a>
+                                        <button type="button" class="btn-copy-ticket text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 p-1" data-ticket="{{ issue.ticket_id }}" title="Copy Ticket ID">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                        </button>
+                                    </div>
+                                    <span class="text-[11px] text-stone-400 block mt-0.5">{{ issue.created_at[:10] }}</span>
+                                </td>
+
+                                <!-- Title, Summary, Location -->
+                                <td class="py-4 px-4 align-top max-w-xs">
+                                    <a href="{{ url_for('citizen.issue_detail', ticket_id=issue.ticket_id) }}" class="font-bold text-[#1C1917] dark:text-[#F5F2EB] hover:text-[#C84B31] dark:hover:text-[#E06D53] block line-clamp-1">
+                                        {{ issue.title }}
+                                    </a>
+                                    <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 line-clamp-2">
+                                        {{ issue.ai_summary or issue.description }}
+                                    </p>
+                                    <div class="flex items-center space-x-1 text-[11px] text-stone-400 mt-1.5">
+                                        <svg class="w-3 h-3 text-stone-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                        <span class="truncate">{{ issue.location }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- Priority & SLA -->
+                                <td class="py-4 px-4 align-top whitespace-nowrap space-y-1">
+                                    <span class="px-2.5 py-1 text-xs font-bold rounded-full border {{ issue.priority|priority_badge }} {% if issue.priority == 'Critical' %}badge-critical-pulse{% endif %} inline-block">
+                                        {{ issue.priority }}
+                                    </span>
+                                    <span class="block text-[11px] font-semibold text-stone-600 dark:text-stone-400">
+                                        ⏱️ {{ issue.sla_target or '24 Hours' }}
+                                    </span>
+                                </td>
+
+                                <!-- Department -->
+                                <td class="py-4 px-4 align-top">
+                                    <span class="text-xs font-medium text-stone-800 dark:text-stone-200 block">
+                                        {{ issue.department }}
+                                    </span>
+                                    <span class="text-[11px] text-stone-400">{{ issue.category }}</span>
+                                </td>
+
+                                <!-- Impact Upvotes -->
+                                <td class="py-4 px-4 align-top whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-md bg-[#FAF7F2] dark:bg-stone-800 border border-[#E5DEC9] dark:border-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs">
+                                        👍 {{ issue.upvotes or 1 }}
+                                    </span>
+                                </td>
+
+                                <!-- Status Badge -->
+                                <td class="py-4 px-4 align-top whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ issue.status|status_badge }}">
+                                        {% if issue.status == 'Reported' %}
+                                            <span class="w-1.5 h-1.5 rounded-full bg-stone-500 mr-1.5"></span>
+                                        {% elif issue.status == 'In Progress' %}
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse mr-1.5"></span>
+                                        {% else %}
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] mr-1.5"></span>
+                                        {% endif %}
+                                        {{ issue.status }}
+                                    </span>
+                                    {% if issue.admin_notes %}
+                                        <span class="block text-[10px] text-[#2D6A4F] dark:text-[#4ADE80] italic mt-1 max-w-[140px] truncate" title="{{ issue.admin_notes }}">
+                                            Note: {{ issue.admin_notes }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="py-4 px-4 align-top text-right whitespace-nowrap">
+                                    <button type="button" 
+                                            class="btn-open-status-modal px-3 py-1.5 rounded-lg bg-[#1C1917] dark:bg-stone-800 hover:bg-stone-800 dark:hover:bg-stone-700 text-white text-xs font-semibold shadow-xs transition inline-flex items-center"
+                                            data-ticket-id="{{ issue.ticket_id }}"
+                                            data-current-status="{{ issue.status }}"
+                                            data-admin-notes="{{ issue.admin_notes or '' }}">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                        Update Status
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="py-12 text-center text-stone-500 dark:text-stone-400">
+                                <p class="font-bold text-stone-700 dark:text-stone-300">No civic complaints found matching the criteria.</p>
+                                <a href="{{ url_for('admin.dashboard') }}" class="text-xs text-[#C84B31] dark:text-[#E06D53] font-semibold underline mt-1 inline-block">
+                                    Reset Filters
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Status Update Accessible Modal -->
+    <div id="status-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="bg-white dark:bg-[#211F1C] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E5DEC9] dark:border-stone-800 space-y-5">
+            
+            <div class="flex items-center justify-between border-b border-[#E5DEC9] dark:border-stone-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="p-1.5 rounded-lg bg-[#FAF0E6] dark:bg-stone-800 text-[#C84B31] dark:text-[#E06D53]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </span>
+                    <h2 id="modal-title" class="text-base font-bold text-[#1C1917] dark:text-[#F5F2EB]">
+                        Update Complaint Status <span id="modal-ticket-id" class="font-mono text-[#C84B31] dark:text-[#E06D53]"></span>
+                    </h2>
+                </div>
+                <button type="button" id="modal-close-btn" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 p-1" aria-label="Close modal">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <form action="{{ url_for('admin.update_status') }}" method="POST" class="space-y-4">
+                <input type="hidden" id="modal-form-ticket-id" name="ticket_id" />
+
+                <div>
+                    <label for="modal-status-select" class="block text-xs font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                        New Issue Status <span class="text-rose-500">*</span>
+                    </label>
+                    <select id="modal-status-select" name="status" required
+                            class="w-full px-3 py-2.5 rounded-xl border border-[#E5DEC9] dark:border-stone-700 focus:ring-2 focus:ring-[#C84B31] bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] font-medium">
+                        <option value="Reported">Reported (Logged, pending field dispatch)</option>
+                        <option value="In Progress">In Progress (Field team working on site)</option>
+                        <option value="Resolved">Resolved (Remediation completed)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="modal-notes" class="block text-xs font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                        Official Action Remarks <span class="text-stone-400 font-normal">(Visible on Citizen Tracking)</span>
+                    </label>
+                    <textarea id="modal-notes" name="admin_notes" rows="3"
+                              placeholder="e.g., Road repair squad #4 dispatched. Asphalt patch completed."
+                              class="w-full px-3 py-2 rounded-xl border border-[#E5DEC9] dark:border-stone-700 focus:ring-2 focus:ring-[#C84B31] bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] text-sm placeholder-stone-400 dark:placeholder-stone-500"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-3 border-t border-[#E5DEC9] dark:border-stone-800">
+                    <button type="button" id="modal-cancel-btn" class="px-4 py-2 rounded-lg text-xs font-semibold text-stone-600 dark:text-stone-400 hover:bg-[#FAF7F2] dark:hover:bg-stone-800 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-lg text-xs font-bold bg-[#C84B31] hover:bg-[#A73C25] text-white shadow-xs transition">
+                        Confirm Status Update
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

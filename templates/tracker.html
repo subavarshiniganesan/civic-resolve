@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen Issue Tracker - CivicResolve AI{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+
+    <!-- Dashboard Header with Hand-Drawn Organic Corner Doodle -->
+    <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#211F1C] border border-[#E5DEC9] dark:border-stone-800 p-6 sm:p-8 shadow-xs">
+        <!-- Hand-drawn corner doodle illustration -->
+        <div class="absolute -right-4 -bottom-6 w-36 h-36 opacity-35 dark:opacity-20 pointer-events-none select-none" aria-hidden="true">
+            <img src="{{ url_for('static', filename='images/civic-corner-doodle.svg') }}" alt="" class="w-full h-full" />
+        </div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FAF0E6] dark:bg-stone-800 text-[#C84B31] dark:text-[#E06D53] border border-[#F2D7CE] dark:border-stone-700 mb-2">
+                    <span>✨ Live Municipal Resolution Stream</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-[#1C1917] dark:text-[#F5F2EB] tracking-tight">
+                    Citizen Issue Tracking Dashboard
+                </h1>
+                <p class="text-stone-500 dark:text-stone-400 text-sm mt-1 max-w-2xl">
+                    Real-time transparency on civic remediation, AI priority assessment, and department resolution workflows.
+                </p>
+            </div>
+            <div>
+                <a href="{{ url_for('citizen.index') }}" 
+                   class="inline-flex items-center px-4 py-2.5 rounded-xl bg-[#C84B31] hover:bg-[#A73C25] text-white text-sm font-semibold shadow-xs hover:shadow-sm transition">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Report New Issue
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Status Overview Metrics -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        <a href="{{ url_for('citizen.track') }}" 
+           class="p-4 rounded-xl border {% if current_status == 'All' and current_priority == 'All' %}bg-[#FAF0E6] dark:bg-stone-800 border-[#C84B31] dark:border-stone-700 ring-2 ring-[#C84B31]/20{% else %}bg-white dark:bg-[#211F1C] border-[#E5DEC9] dark:border-stone-800 hover:bg-[#FAF7F2] dark:hover:bg-stone-800/80{% endif %} transition">
+            <span class="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">All Complaints</span>
+            <span class="text-2xl font-extrabold text-[#1C1917] dark:text-[#F5F2EB] mt-1 block">{{ metrics.total }}</span>
+        </a>
+        <a href="{{ url_for('citizen.track', status='Reported') }}" 
+           class="p-4 rounded-xl border {% if current_status == 'Reported' %}bg-stone-100 dark:bg-stone-800 border-stone-400 dark:border-stone-600 ring-2 ring-stone-400/20{% else %}bg-white dark:bg-[#211F1C] border-[#E5DEC9] dark:border-stone-800 hover:bg-[#FAF7F2] dark:hover:bg-stone-800/80{% endif %} transition">
+            <span class="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider block">Reported</span>
+            <span class="text-2xl font-extrabold text-stone-700 dark:text-stone-300 mt-1 block">{{ metrics.reported }}</span>
+        </a>
+        <a href="{{ url_for('citizen.track', status='In Progress') }}" 
+           class="p-4 rounded-xl border {% if current_status == 'In Progress' %}bg-[#FFFBEB] dark:bg-stone-800 border-[#D97706] dark:border-stone-700 ring-2 ring-[#D97706]/20{% else %}bg-white dark:bg-[#211F1C] border-[#E5DEC9] dark:border-stone-800 hover:bg-[#FAF7F2] dark:hover:bg-stone-800/80{% endif %} transition">
+            <span class="text-xs font-semibold text-[#D97706] dark:text-[#FBBF24] uppercase tracking-wider block">In Progress</span>
+            <span class="text-2xl font-extrabold text-[#D97706] dark:text-[#FBBF24] mt-1 block">{{ metrics.in_progress }}</span>
+        </a>
+        <a href="{{ url_for('citizen.track', status='Resolved') }}" 
+           class="p-4 rounded-xl border {% if current_status == 'Resolved' %}bg-[#F2F7F4] dark:bg-stone-800 border-[#2D6A4F] dark:border-stone-700 ring-2 ring-[#2D6A4F]/20{% else %}bg-white dark:bg-[#211F1C] border-[#E5DEC9] dark:border-stone-800 hover:bg-[#FAF7F2] dark:hover:bg-stone-800/80{% endif %} transition">
+            <span class="text-xs font-semibold text-[#2D6A4F] dark:text-[#4ADE80] uppercase tracking-wider block">Resolved</span>
+            <span class="text-2xl font-extrabold text-[#2D6A4F] dark:text-[#4ADE80] mt-1 block">{{ metrics.resolved }}</span>
+        </a>
+        <a href="{{ url_for('citizen.track', priority='Critical') }}" 
+           class="p-4 rounded-xl border {% if current_priority == 'Critical' %}bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-700 ring-2 ring-rose-500/20{% else %}bg-white dark:bg-[#211F1C] border-[#E5DEC9] dark:border-stone-800 hover:bg-[#FAF7F2] dark:hover:bg-stone-800/80{% endif %} transition col-span-2 sm:col-span-1">
+            <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wider block">Critical Active</span>
+            <span class="text-2xl font-extrabold text-rose-600 dark:text-rose-400 mt-1 block">{{ metrics.critical_pending }}</span>
+        </a>
+    </div>
+
+    <!-- Filter & Live Search Toolbar -->
+    <div class="bg-white dark:bg-[#211F1C] p-4 sm:p-5 rounded-2xl border border-[#E5DEC9] dark:border-stone-800 shadow-xs space-y-4">
+        <form method="GET" action="{{ url_for('citizen.track') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            
+            <!-- Real-time / Form Search -->
+            <div>
+                <label for="tracker-live-search" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Search Complaints
+                </label>
+                <div class="relative">
+                    <input type="text" id="tracker-live-search" name="search" value="{{ current_search }}"
+                           placeholder="Type ticket, title, or road..."
+                           class="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] placeholder-stone-400 dark:placeholder-stone-500 focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition" />
+                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-stone-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div>
+                <label for="filter-status" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Status
+                </label>
+                <select id="filter-status" name="status" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_status == 'All' %}selected{% endif %}>All Statuses</option>
+                    <option value="Reported" {% if current_status == 'Reported' %}selected{% endif %}>Reported</option>
+                    <option value="In Progress" {% if current_status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                    <option value="Resolved" {% if current_status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                </select>
+            </div>
+
+            <!-- Priority Filter -->
+            <div>
+                <label for="filter-priority" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Priority
+                </label>
+                <select id="filter-priority" name="priority" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_priority == 'All' %}selected{% endif %}>All Priorities</option>
+                    {% for p in priorities %}
+                        <option value="{{ p }}" {% if current_priority == p %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Department Filter -->
+            <div>
+                <label for="filter-department" class="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Civic Department
+                </label>
+                <select id="filter-department" name="department" onchange="this.form.submit()"
+                        class="w-full py-2 px-3 text-sm rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-white dark:bg-[#161513] text-[#1C1917] dark:text-[#F5F2EB] focus:ring-2 focus:ring-[#C84B31] focus:border-[#C84B31] transition">
+                    <option value="All" {% if current_department == 'All' %}selected{% endif %}>All Departments</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept }}" {% if current_department == dept %}selected{% endif %}>{{ dept }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        <!-- Active Filter Indicator Pills -->
+        {% if current_status != 'All' or current_priority != 'All' or current_department != 'All' or current_search %}
+            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-[#E5DEC9] dark:border-stone-800 text-xs">
+                <span class="text-stone-500 dark:text-stone-400 font-semibold">Active Filters:</span>
+                {% if current_status != 'All' %}
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#FAF7F2] dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-[#E5DEC9] dark:border-stone-700 font-medium">Status: {{ current_status }}</span>
+                {% endif %}
+                {% if current_priority != 'All' %}
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#FAF7F2] dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-[#E5DEC9] dark:border-stone-700 font-medium">Priority: {{ current_priority }}</span>
+                {% endif %}
+                {% if current_department != 'All' %}
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#FAF7F2] dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-[#E5DEC9] dark:border-stone-700 font-medium">Dept: {{ current_department }}</span>
+                {% endif %}
+                {% if current_search %}
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#FAF7F2] dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-[#E5DEC9] dark:border-stone-700 font-medium">Query: "{{ current_search }}"</span>
+                {% endif %}
+                <a href="{{ url_for('citizen.track') }}" class="text-[#C84B31] dark:text-[#E06D53] hover:underline font-semibold ml-1">Clear all filters</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Complaints Cards Grid -->
+    <div id="complaints-list" class="space-y-4">
+        {% if complaints %}
+            {% for issue in complaints %}
+                <article class="complaint-card bg-white dark:bg-[#211F1C] rounded-2xl border border-[#E5DEC9] dark:border-stone-800 p-5 sm:p-6 shadow-xs card-hover card-entrance stagger-{{ (loop.index % 5) + 1 }} space-y-4" aria-labelledby="issue-title-{{ issue.id }}">
+                    
+                    <!-- Card Top Header -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#E5DEC9] dark:border-stone-800 pb-3">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-[#FAF7F2] dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-[#E5DEC9] dark:border-stone-700">
+                                #{{ issue.ticket_id }}
+                            </span>
+                            <span class="px-2.5 py-1 text-xs font-bold rounded-full border {{ issue.priority|priority_badge }} {% if issue.priority == 'Critical' %}badge-critical-pulse{% endif %}">
+                                Priority: {{ issue.priority }}
+                            </span>
+                            <!-- AI Estimated SLA Target Badge -->
+                            <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-[#FAF0E6] dark:bg-stone-800 text-[#C84B31] dark:text-[#E06D53] border border-[#F2D7CE] dark:border-stone-700">
+                                ⏱️ SLA: {{ issue.sla_target or '24 Hours' }}
+                            </span>
+                            <span class="text-xs text-stone-400 hidden sm:inline">&bull;</span>
+                            <span class="text-xs text-stone-500 dark:text-stone-400 font-medium hidden sm:inline">{{ issue.created_at }}</span>
+                        </div>
+
+                        <!-- Progress Status Badge -->
+                        <div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border {{ issue.status|status_badge }}">
+                                {% if issue.status == 'Reported' %}
+                                    <span class="w-2 h-2 rounded-full bg-stone-500 mr-1.5"></span>
+                                {% elif issue.status == 'In Progress' %}
+                                    <span class="w-2 h-2 rounded-full bg-[#D97706] animate-pulse mr-1.5"></span>
+                                {% else %}
+                                    <span class="w-2 h-2 rounded-full bg-[#2D6A4F] mr-1.5"></span>
+                                {% endif %}
+                                {{ issue.status }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Title & Details -->
+                    <div class="space-y-2">
+                        <h2 id="issue-title-{{ issue.id }}" class="text-lg sm:text-xl font-bold text-[#1C1917] dark:text-[#F5F2EB] leading-snug">
+                            <a href="{{ url_for('citizen.issue_detail', ticket_id=issue.ticket_id) }}" class="hover:text-[#C84B31] dark:hover:text-[#E06D53] transition">
+                                {{ issue.title }}
+                            </a>
+                        </h2>
+                        
+                        <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                            {{ issue.description }}
+                        </p>
+                    </div>
+
+                    <!-- Gemini AI Executive Insight -->
+                    {% if issue.ai_summary %}
+                        <div class="p-3.5 rounded-xl bg-[#FAF7F2] dark:bg-[#161513] border border-[#E5DEC9] dark:border-stone-800 text-sm space-y-1">
+                            <div class="flex items-center space-x-1.5 text-xs font-bold text-[#C84B31] dark:text-[#E06D53] uppercase tracking-wider">
+                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                                <span>Gemini AI Briefing</span>
+                            </div>
+                            <p class="text-xs text-stone-800 dark:text-stone-200 font-medium">
+                                {{ issue.ai_summary }}
+                            </p>
+                            {% if issue.urgency_reason %}
+                                <p class="text-[11px] text-stone-500 dark:text-stone-400 italic">
+                                    Urgency: {{ issue.urgency_reason }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Three-Step Visual Progress Stepper -->
+                    <div class="py-2">
+                        {% set current_step = issue.status|status_step %}
+                        <div class="relative flex items-center justify-between">
+                            <!-- Progress line bar -->
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1.5 bg-stone-200 dark:bg-stone-700 z-0 rounded-full overflow-hidden" aria-hidden="true">
+                                <div class="h-full bg-[#C84B31] progress-animated step-transition" style="width: {% if current_step == 1 %}0%{% elif current_step == 2 %}50%{% else %}100%{% endif %};"></div>
+                            </div>
+
+                            <!-- Step 1: Reported -->
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all {% if current_step >= 1 %}bg-[#C84B31] text-white ring-4 ring-[#FAF0E6] dark:ring-stone-800{% else %}bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-400{% endif %}">
+                                    ✓
+                                </div>
+                                <span class="text-[11px] font-semibold text-stone-700 dark:text-stone-300 mt-1">1. Reported</span>
+                            </div>
+
+                            <!-- Step 2: In Progress -->
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all {% if current_step >= 2 %}bg-[#D97706] text-white ring-4 ring-[#FFFBEB] dark:ring-stone-800{% else %}bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-400{% endif %}">
+                                    {% if current_step >= 2 %}✓{% else %}2{% endif %}
+                                </div>
+                                <span class="text-[11px] font-semibold text-stone-700 dark:text-stone-300 mt-1">2. In Progress</span>
+                            </div>
+
+                            <!-- Step 3: Resolved -->
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all {% if current_step >= 3 %}bg-[#2D6A4F] text-white ring-4 ring-[#F2F7F4] dark:ring-stone-800{% else %}bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-400{% endif %}">
+                                    {% if current_step >= 3 %}✓{% else %}3{% endif %}
+                                </div>
+                                <span class="text-[11px] font-semibold text-stone-700 dark:text-stone-300 mt-1">3. Resolved</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer: Upvote Button, Department & Location -->
+                    <div class="pt-3 border-t border-[#E5DEC9] dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-stone-600 dark:text-stone-400">
+                            <!-- +1 Community Impact Upvote Button -->
+                            <button type="button" class="btn-upvote inline-flex items-center px-3 py-1.5 rounded-lg border border-[#E5DEC9] dark:border-stone-700 bg-[#FAF7F2] dark:bg-stone-800 hover:bg-[#FAF0E6] dark:hover:bg-stone-700 hover:border-[#C84B31] dark:hover:border-stone-600 text-stone-700 dark:text-stone-300 transition text-xs font-semibold focus:ring-2 focus:ring-[#C84B31]"
+                                    data-ticket-id="{{ issue.ticket_id }}" title="Confirm you are also affected by this issue">
+                                <svg class="w-3.5 h-3.5 mr-1 text-[#C84B31] dark:text-[#E06D53]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
+                                <span class="upvote-count mr-1 font-bold">{{ issue.upvotes or 1 }}</span>
+                                <span class="upvote-label">Confirm Issue</span>
+                            </button>
+
+                            <!-- Department Badge -->
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-[#FAF7F2] dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-[#E5DEC9] dark:border-stone-700 font-medium">
+                                <svg class="w-3.5 h-3.5 mr-1.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                {{ issue.department }}
+                            </span>
+                            
+                            <!-- Location Landmark -->
+                            <span class="inline-flex items-center text-stone-600 dark:text-stone-400">
+                                <svg class="w-3.5 h-3.5 mr-1 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                {{ issue.location }}
+                            </span>
+                        </div>
+
+                        <div>
+                            <a href="{{ url_for('citizen.issue_detail', ticket_id=issue.ticket_id) }}" 
+                               class="inline-flex items-center text-[#C84B31] dark:text-[#E06D53] hover:underline font-semibold transition">
+                                View Full Ticket Details
+                                <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <!-- Hand-drawn Empty state Doodle -->
+            <div class="text-center py-12 bg-white dark:bg-[#211F1C] rounded-2xl border border-[#E5DEC9] dark:border-stone-800 p-8 space-y-4">
+                <div class="w-56 h-36 mx-auto">
+                    <img src="{{ url_for('static', filename='images/empty-state-doodle.svg') }}" alt="No issues found illustration" class="w-full h-full object-contain" />
+                </div>
+                <h3 class="text-lg font-bold text-[#1C1917] dark:text-[#F5F2EB]">No Complaints Match Your Filters</h3>
+                <p class="text-sm text-stone-500 dark:text-stone-400 max-w-sm mx-auto">
+                    Try loosening your status or priority filters to view other civic issues in the repository.
+                </p>
+                <a href="{{ url_for('citizen.track') }}" class="inline-block px-5 py-2.5 bg-[#FAF7F2] dark:bg-stone-800 hover:bg-[#F5EFE6] dark:hover:bg-stone-700 text-[#1C1917] dark:text-[#F5F2EB] text-xs font-semibold rounded-xl border border-[#E5DEC9] dark:border-stone-700 transition">
+                    Reset All Filters
+                </a>
+            </div>
+        {% endif %}
+
+        <div id="no-filter-results" class="hidden text-center py-8 bg-white dark:bg-[#211F1C] rounded-2xl border border-[#E5DEC9] dark:border-stone-800 p-6">
+            <p class="text-sm font-semibold text-stone-700 dark:text-stone-300">No complaints match your live keyword search.</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

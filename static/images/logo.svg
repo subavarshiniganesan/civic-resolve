@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="terracotta-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C84B31" />
+      <stop offset="100%" stop-color="#9E2A1A" />
+    </linearGradient>
+  </defs>
+  <!-- Artisanal Rounded Stamp / Shield -->
+  <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#terracotta-grad)" stroke="#FAF7F2" stroke-width="1.5" />
+  <!-- Handcrafted Inner border -->
+  <rect x="7" y="7" width="34" height="34" rx="9" fill="none" stroke="#FAF7F2" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="3 3"/>
+  <!-- Civic Pillar Architecture Lines -->
+  <path d="M15 34V22M24 34V16M33 34V22" stroke="#FAF7F2" stroke-width="2.8" stroke-linecap="round" />
+  <path d="M12 34H36" stroke="#FAF7F2" stroke-width="2.8" stroke-linecap="round" />
+  <!-- AI Sparkle Vertex in Warm Ochre -->
+  <path d="M24 9.5L25.8 13.5L30 15L25.8 16.5L24 20.5L22.2 16.5L18 15L22.2 13.5Z" fill="#FBBF24" />
+</svg>

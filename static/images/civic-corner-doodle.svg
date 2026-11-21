@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" class="w-full h-full">
+  <!-- Subtle organic decorative blob -->
+  <path d="M160,30 C190,60 195,120 160,160 C125,200 65,190 35,160 C5,130 5,70 35,35 C65,0 130,0 160,30 Z" fill="#C84B31" fill-opacity="0.08" />
+  <path d="M140,45 C165,70 170,115 140,145 C110,175 60,165 40,140 C20,115 20,65 45,40 C70,15 115,20 140,45 Z" stroke="#C84B31" stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.25" />
+  
+  <!-- Hand-drawn leaf / sprout -->
+  <path d="M130,80 C150,60 165,75 155,95 C145,115 130,80 130,80 Z" fill="#2D6A4F" fill-opacity="0.2" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M130,80 Q145,85 155,95" stroke="#2D6A4F" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Hand-drawn stars/sparkles -->
+  <path d="M70,40 L73,50 L83,53 L73,56 L70,66 L67,56 L57,53 L67,50 Z" fill="#D97706" fill-opacity="0.6"/>
+  <path d="M110,130 L112,137 L119,139 L112,141 L110,148 L108,141 L101,139 L108,137 Z" fill="#C84B31" fill-opacity="0.5"/>
+  <circle cx="150" cy="120" r="3" fill="#2D6A4F" fill-opacity="0.4"/>
+  <circle cx="45" cy="85" r="2.5" fill="#D97706" fill-opacity="0.4"/>
+  <circle cx="95" cy="30" r="2" fill="#C84B31" fill-opacity="0.4"/>
+
+  <!-- Subtle civic checkmark doodle -->
+  <path d="M45,120 Q55,125 65,115 Q80,100 95,85" stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1"/>
+</svg>
