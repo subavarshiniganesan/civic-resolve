@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" class="w-full h-full">
+  <!-- Soft organic backdrop -->
+  <path d="M70,50 C130,20 220,30 270,70 C320,110 300,180 250,200 C200,220 100,210 50,180 C0,150 10,80 70,50 Z" fill="#FAF7F2" stroke="#E5DEC9" stroke-width="2" stroke-dasharray="6 6"/>
+  
+  <!-- Hand-drawn ground horizon line -->
+  <path d="M40,175 Q160,178 280,174" stroke="#1C1917" stroke-width="2" stroke-linecap="round" stroke-opacity="0.4"/>
+  <path d="M60,182 Q160,185 260,181" stroke="#1C1917" stroke-width="1" stroke-linecap="round" stroke-opacity="0.2"/>
+
+  <!-- Small civic house/building doodle in distance -->
+  <rect x="75" y="130" width="35" height="45" rx="3" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.8" />
+  <polygon points="70,130 92,112 115,130" fill="#C84B31" fill-opacity="0.2" stroke="#C84B31" stroke-width="1.8" stroke-linejoin="round"/>
+  <rect x="85" y="145" width="14" height="30" rx="2" fill="#2D6A4F" fill-opacity="0.15" stroke="#1C1917" stroke-width="1.5"/>
+
+  <!-- Friendly Streetlamp doodle -->
+  <path d="M125,175 L125,100" stroke="#1C1917" stroke-width="2" stroke-linecap="round"/>
+  <path d="M125,100 Q135,92 145,100" stroke="#1C1917" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <polygon points="140,100 150,100 148,110 142,110" fill="#D97706" fill-opacity="0.4" stroke="#D97706" stroke-width="1.5"/>
+  <circle cx="145" cy="116" r="3" fill="#D97706"/>
+  <!-- Light rays -->
+  <path d="M140,123 L135,132" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M145,124 L145,135" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M150,123 L155,132" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+
+  <!-- Hand-drawn Big Magnifying Glass -->
+  <!-- Glass lens with warm tint -->
+  <circle cx="205" cy="105" r="42" fill="#FFFFFF" stroke="#C84B31" stroke-width="3.5" />
+  <circle cx="205" cy="105" r="36" fill="#C84B31" fill-opacity="0.06" stroke="#E5DEC9" stroke-width="1.5"/>
+  <!-- Glass reflection arcs -->
+  <path d="M185,85 A 30 30 0 0 1 225,85" stroke="#C84B31" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.5"/>
+  <path d="M190,92 A 22 22 0 0 1 215,92" stroke="#C84B31" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.3"/>
+  
+  <!-- Tiny civic leaf inside glass -->
+  <path d="M205,115 C215,98 222,105 215,118 C208,130 205,115 205,115 Z" fill="#2D6A4F" fill-opacity="0.3" stroke="#2D6A4F" stroke-width="1.8"/>
+  <path d="M205,115 L215,107" stroke="#2D6A4F" stroke-width="1.2"/>
+
+  <!-- Handle with hand-drawn angle -->
+  <path d="M235,135 L268,168" stroke="#1C1917" stroke-width="7" stroke-linecap="round"/>
+  <path d="M237,137 L266,166" stroke="#FAF7F2" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Playful stars & sparkles -->
+  <path d="M165,55 L167,61 L173,63 L167,65 L165,71 L163,65 L157,63 L163,61 Z" fill="#D97706"/>
+  <path d="M255,60 L256.5,65 L261.5,66.5 L256.5,68 L255,73 L253.5,68 L248.5,66.5 L253.5,65 Z" fill="#C84B31"/>
+  <path d="M75,90 L76.5,95 L81.5,96.5 L76.5,98 L75,103 L73.5,98 L68.5,96.5 L73.5,95 Z" fill="#2D6A4F"/>
+  <circle cx="270" cy="110" r="3" fill="#D97706" fill-opacity="0.5"/>
+  <circle cx="60" cy="140" r="2.5" fill="#C84B31" fill-opacity="0.4"/>
+</svg>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#FAF7F2] dark:bg-[#161513]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CivicResolve - AI-Powered Civic Issue Resolution{% endblock %}</title>
+    <meta name="description" content="AI-Powered Civic Issue Reporting and Intelligent Resolution Platform built with Google Gemini for PromptWars x GDGoC PSG iTech.">
+    
+    <!-- Inline Theme Check to prevent FOUC -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN with Custom Artisanal Palette & Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#FDF6F3',
+                            100: '#F9ECE6',
+                            200: '#F3D4C7',
+                            300: '#E9B19E',
+                            400: '#DE886F',
+                            500: '#D46347',
+                            600: '#C84B31', /* Warm terracotta */
+                            700: '#A73C25',
+                            800: '#873220',
+                            900: '#6E2C1E',
+                            950: '#3B130B',
+                        },
+                        terracotta: {
+                            DEFAULT: '#C84B31',
+                            light: '#E06D53',
+                            dark: '#A73C25',
+                        },
+                        sage: {
+                            50: '#F2F7F4',
+                            100: '#E1EDE6',
+                            500: '#2D6A4F', /* Forest sage */
+                            600: '#245640',
+                            700: '#1B4130',
+                            light: '#4ADE80',
+                        },
+                        ochre: {
+                            50: '#FFFBEB',
+                            100: '#FEF3C7',
+                            500: '#D97706', /* Warm ochre */
+                            600: '#B45309',
+                            700: '#92400E',
+                        },
+                        paper: {
+                            50: '#FAF7F2', /* Warm editorial cream */
+                            100: '#F5EFE6',
+                            200: '#E5DEC9', /* Subtle ink border */
+                            border: '#E5DEC9',
+                        },
+                        ink: {
+                            50: '#F5F2EB', /* Cream text for dark mode */
+                            800: '#2A2623',
+                            900: '#1C1917', /* Deep charcoal text */
+                            950: '#161513', /* Warm charcoal-slate bg */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="flex flex-col min-h-full text-[#1C1917] dark:text-[#F5F2EB] bg-[#FAF7F2] dark:bg-[#161513] antialiased font-sans transition-colors duration-200">
+
+    <!-- Accessible Skip to Main Content Link -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-primary-600 focus:text-white focus:shadow-lg focus:rounded-b-md">
+        Skip to main content
+    </a>
+
+    <!-- Top Announcement Bar: Hackathon Identification -->
+    <div class="bg-[#1C1917] dark:bg-[#11100E] text-stone-300 text-xs py-2 px-4 border-b border-[#2E2A24]">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-[#C84B31]/20 text-[#E06D53] border border-[#C84B31]/30">
+                    PromptWars
+                </span>
+                <span>GDGoC PSG iTech Hackathon Entry</span>
+            </div>
+            <div class="flex items-center space-x-3 text-stone-400">
+                <span class="flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#4ADE80] animate-pulse mr-1.5" aria-hidden="true"></span>
+                    Powered by <strong class="text-white ml-1 font-semibold">Google Gemini 2.5 Flash</strong>
+                </span>
+                <span class="hidden sm:inline text-stone-600">|</span>
+                <span class="hidden sm:inline">Production Ready &bull; Under 10MB</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#211F1C]/95 backdrop-blur border-b border-[#E5DEC9] dark:border-stone-800 shadow-xs transition-colors duration-200" role="banner">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Main Navigation">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo & Name -->
+                <div class="flex items-center">
+                    <a href="{{ url_for('citizen.index') }}" class="flex items-center space-x-3 group" aria-label="CivicResolve Home">
+                        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="CivicResolve Logo" class="w-9 h-9 transform group-hover:scale-105 transition-transform" />
+                        <div>
+                            <span class="text-xl font-bold tracking-tight text-[#1C1917] dark:text-[#F5F2EB] flex items-center">
+                                Civic<span class="text-[#C84B31] dark:text-[#E06D53]">Resolve</span>
+                            </span>
+                            <span class="block text-[10px] uppercase tracking-wider font-semibold text-stone-500 dark:text-stone-400 -mt-1">
+                                AI Civic Resolution
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Links & Theme Toggle -->
+                <div class="flex items-center space-x-1 sm:space-x-3">
+                    <a href="{{ url_for('citizen.index') }}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if request.endpoint == 'citizen.index' %}bg-[#FAF0E6] dark:bg-stone-800 text-[#C84B31] dark:text-[#E06D53] font-semibold{% else %}text-stone-700 dark:text-stone-300 hover:text-[#C84B31] dark:hover:text-[#E06D53] hover:bg-[#FAF7F2] dark:hover:bg-stone-800{% endif %}"
+                       aria-current="{% if request.endpoint == 'citizen.index' %}page{% else %}false{% endif %}">
+                        Report Issue
+                    </a>
+                    
+                    <a href="{{ url_for('citizen.track') }}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if request.endpoint == 'citizen.track' %}bg-[#FAF0E6] dark:bg-stone-800 text-[#C84B31] dark:text-[#E06D53] font-semibold{% else %}text-stone-700 dark:text-stone-300 hover:text-[#C84B31] dark:hover:text-[#E06D53] hover:bg-[#FAF7F2] dark:hover:bg-stone-800{% endif %}"
+                       aria-current="{% if request.endpoint == 'citizen.track' %}page{% else %}false{% endif %}">
+                        Track Complaints
+                    </a>
+                    
+                    <a href="{{ url_for('admin.dashboard') }}" 
+                       class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-semibold transition-all {% if 'admin' in request.endpoint %}bg-[#1C1917] dark:bg-[#FAF7F2] text-[#FAF7F2] dark:text-[#1C1917] shadow-sm{% else %}bg-[#FAF7F2] dark:bg-stone-800 text-[#1C1917] dark:text-stone-200 hover:bg-[#F5EFE6] dark:hover:bg-stone-700 border border-[#E5DEC9] dark:border-stone-700{% endif %}"
+                       aria-current="{% if 'admin' in request.endpoint %}page{% else %}false{% endif %}">
+                        <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        Admin Portal
+                    </a>
+
+                    <!-- Accessible Light / Dark Theme Toggle Button -->
+                    <button id="theme-toggle" type="button" 
+                            class="p-2 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-[#FAF7F2] dark:hover:bg-stone-800 hover:text-[#C84B31] dark:hover:text-[#E06D53] border border-transparent hover:border-[#E5DEC9] dark:hover:border-stone-700 transition focus:ring-2 focus:ring-primary-500"
+                            aria-label="Toggle light or dark theme" title="Toggle theme">
+                        <!-- Moon icon for light mode -->
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <!-- Sun icon for dark mode -->
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Flash Messages Container -->
+    <aside aria-label="Notifications" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="space-y-2">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-xl border flex items-start justify-between shadow-sm transition-all duration-300 {% if category == 'error' %}bg-rose-50 border-rose-200 text-rose-800{% elif category == 'success' %}bg-emerald-50 border-emerald-200 text-emerald-800{% elif category == 'warning' %}bg-amber-50 border-amber-200 text-amber-800{% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %}" role="alert">
+                            <div class="flex items-start space-x-3">
+                                {% if category == 'success' %}
+                                    <svg class="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                {% elif category == 'error' %}
+                                    <svg class="w-5 h-5 text-rose-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                                {% else %}
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                {% endif %}
+                                <div class="text-sm font-medium">{{ message }}</div>
+                            </div>
+                            <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 p-1" aria-label="Dismiss notification">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Semantic Accessible Footer -->
+    <footer class="bg-white dark:bg-[#211F1C] border-t border-[#E5DEC9] dark:border-stone-800 mt-auto py-8 text-stone-500 dark:text-stone-400 text-sm transition-colors duration-200" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="CivicResolve Icon" class="w-6 h-6" />
+                <span class="font-bold text-[#1C1917] dark:text-[#F5F2EB]">CivicResolve</span>
+                <span class="text-stone-400">&bull;</span>
+                <span class="text-xs text-stone-600 dark:text-stone-400">Built for PromptWars x GDGoC PSG iTech Hackathon</span>
+            </div>
+            <div class="flex items-center space-x-6 text-xs text-stone-600 dark:text-stone-400">
+                <span>Model: <strong class="text-[#1C1917] dark:text-[#F5F2EB]">gemini-2.5-flash</strong></span>
+                <span>Framework: <strong class="text-[#1C1917] dark:text-[#F5F2EB]">Flask + Tailwind CSS</strong></span>
+                <span>Deployment: <strong class="text-[#1C1917] dark:text-[#F5F2EB]">Gunicorn / Docker Ready</strong></span>
+            </div>
+            <p class="text-xs text-stone-400">
+                &copy; 2026 CivicResolve. Empowering citizens through Gemini AI intelligence.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
